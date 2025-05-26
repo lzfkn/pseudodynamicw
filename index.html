@@ -101,7 +101,7 @@
 
     const endpoint = 'https://api.sheetbest.com/sheets/e0310672-2581-47a7-a6fe-ca6b6d362094';
 
-    fetch("https://api.sheetbest.com/sheets/e0310672-2581-47a7-a6fe-ca6b6d362094")
+    fetch(endpoint)
       .then(response => response.json())
       .then(data => {
         data.forEach(item => {
