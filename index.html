@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Modernist Architecture in Doha</title>
+  <title>MODERNIST ARCHITECTURE IN DOHA</title>
   <style>
     :root {
-      --papyrus: #c7a6f6;
-      --lapis: #e0ecf0;
+      --papyrus: #e6deff;
+      --lapis: #ffffff;
       --hematite: #6f3af5;
-      --sandstone: #8fe4cc;
+      --sandstone: #2415f6;
       --desert-shadow: rgba(119, 109, 224, 0.06);
       --ink: #3133af;
       --gray: #656161;
@@ -21,6 +21,17 @@
       margin: 0;
       padding: 2rem;
     }
+
+    body {
+    background-image: url('https://pizzainmotion.boardingarea.com/wp-content/uploads/2018/05/IMG_5662.jpg');
+    background-size: cover;       /
+    background-position: center;  /
+    background-repeat: no-repeat; /
+    background-attachment: fixed; /
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
 
     h1 {
       text-align: center;
@@ -53,6 +64,32 @@
       transform: translateY(-2px);
     }
 
+    .scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+
+  .gallery {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .card {
+    flex: 0 0 auto;
+    width: 250px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: inline-block;
+  }
+
+  .card img {
+    width: 100%;
+    height: auto;
+  }
+
     .card img {
       width: 100%;
       height: auto;
@@ -77,72 +114,68 @@
       color: var(--gray);
       line-height: 1.5;
     }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    a:hover .card-title {
-      color: var(--lapis);
-    }
-
-    a:hover {
-      text-decoration: none;
-    }
   </style>
 </head>
 <body>
-  <h1>Modernist Architecture in Doha</h1>
-  <div class="gallery" id="gallery"></div>
+  <h1>MODERNIST ARCHITECTURE IN DOHA</h1>
+  <div id="scroll-container">
+    <div id="gallery"></div>
+    <div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000;">
+  <img id="lightbox-img" src="" style="max-width:90%; max-height:90%;">
+</div>
+  </div>
+  
 
   <script>
     const objects = [];
-    const endpoint = 'https://api.sheetbest.com/sheets/e0310672-2581-47a7-a6fe-ca6b6d362094';
+    const endpoint = 'https://api.sheetbest.com/sheets/b95736f7-8cb4-4524-85b9-7264e14776b5';
 
     fetch(endpoint)
       .then(response => response.json())
       .then(data => {
         data.forEach(item => {
           objects.push({
-            title: item.name,
+            name: item.name,
             image: item.image,
             description: item.description,
             link: item.link
           });
-        });console.log(objects);
+        });
         renderGallery();
       })
       .catch(error => console.error('Error fetching data:', error));
 
-    function renderGallery() {
-      const gallery = document.getElementById("gallery");
+      function renderGallery() {
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
 
-      if (!gallery) {
-        console.error("No element with id 'gallery' found.");
-        return;
-      }
+  objects.forEach(obj => {
+    const card = document.createElement("div");
+    card.className = "card";
 
-      gallery.innerHTML = "";
+    card.innerHTML = `
+  <a href="${obj.link}" target="_blank" style="text-decoration: none; color: inherit;">
+    <img src="${obj.image}" alt="${obj.name}">
+    <h3>${obj.name}</h3>
+  </a>
+  <p>${obj.description}</p>
+`;
 
-      objects.forEach(obj => {
-        const card = document.createElement("div");
-        card.style.border = "1px solid #ccc";
-        card.style.padding = "10px";
-        card.style.margin = "10px";
-        card.style.width = "250px";
-        card.style.display = "inline-block";
-
-        card.innerHTML = `
-          <img src="${obj.image}" alt="${obj.name}" style="width:100%; height:auto;">
-          <h3>${obj.name}</h3>
-          <p>${obj.description}</p>
-          <a href="${obj.link}" target="_blank">Visit</a>
-        `;
-
-        gallery.appendChild(card);
-      });
+    gallery.appendChild(card);
+  });
+}
+document.addEventListener("click", function (e) {
+    if (e.target.tagName === "IMG" && e.target.closest(".card")) {
+      const src = e.target.getAttribute("src");
+      document.getElementById("lightbox-img").src = src;
+      document.getElementById("lightbox").style.display = "flex";
     }
+  });
+  document.getElementById("lightbox").addEventListener("click", function () {
+    this.style.display = "none";
+  });
+  
   </script>
 </body>
 </html>
