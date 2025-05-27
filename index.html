@@ -97,9 +97,8 @@
   <div class="gallery" id="gallery"></div>
 
   <script>
-    let objects = [];
-
-    const endpoint = 'https://api.sheetbest.com/sheets/b95736f7-8cb4-4524-85b9-7264e14776b5';
+    const objects = [];
+    const endpoint = 'https://api.sheetbest.com/sheets/e0310672-2581-47a7-a6fe-ca6b6d362094';
 
     fetch(endpoint)
       .then(response => response.json())
@@ -115,22 +114,30 @@
         renderGallery();
       })
       .catch(error => console.error('Error fetching data:', error));
-    
+
     function renderGallery() {
       const gallery = document.getElementById("gallery");
 
+      if (!gallery) {
+        console.error("No element with id 'gallery' found.");
+        return;
+      }
+
+      gallery.innerHTML = "";
+
       objects.forEach(obj => {
         const card = document.createElement("div");
-        card.className = "card";
+        card.style.border = "1px solid #ccc";
+        card.style.padding = "10px";
+        card.style.margin = "10px";
+        card.style.width = "250px";
+        card.style.display = "inline-block";
 
         card.innerHTML = `
-          <a href="${obj.link}" target="_blank">
-            <img src="${obj.image}" alt="${obj.title}">
-            <div class="card-content">
-              <div class="card-title">${obj.title}</div>
-              <div class="card-description">${obj.description}</div>
-            </div>
-          </a>
+          <img src="${obj.image}" alt="${obj.name}" style="width:100%; height:auto;">
+          <h3>${obj.name}</h3>
+          <p>${obj.description}</p>
+          <a href="${obj.link}" target="_blank">Visit</a>
         `;
 
         gallery.appendChild(card);
