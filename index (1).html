@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MODERNIST ARCHITECTURE IN DOHA</title>
+  <style>
+    :root {
+      --papyrus: #e6deff;
+      --lapis: #ffffff;
+      --hematite: #6f3af5;
+      --sandstone: #2415f6;
+      --desert-shadow: rgba(119, 109, 224, 0.06);
+      --ink: #3133af;
+      --gray: #656161;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: var(--papyrus);
+      color: var(--ink);
+      margin: 0;
+      padding: 2rem;
+    }
+
+    body {
+    background-image: url('https://pizzainmotion.boardingarea.com/wp-content/uploads/2018/05/IMG_5662.jpg');
+    background-size: cover;       /
+    background-position: center;  /
+    background-repeat: no-repeat; /
+    background-attachment: fixed; /
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: var(--lapis);
+      border-bottom: 2px solid var(--sandstone);
+      padding-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .card {
+      background-color: #fcfaf5;
+      border: 1px solid var(--sandstone);
+      border-radius: 8px;
+      box-shadow: 0 2px 6px var(--desert-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+
+  .gallery {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .card {
+    flex: 0 0 auto;
+    width: 250px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: inline-block;
+  }
+
+  .card img {
+    width: 100%;
+    height: auto;
+  }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 1px solid var(--sandstone);
+    }
+
+    .card-content {
+      padding: 1rem;
+      background-color: #fffef9;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.4rem;
+      color: var(--hematite);
+    }
+
+    .card-description {
+      font-size: 0.8rem;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <h1>MODERNIST ARCHITECTURE IN DOHA</h1>
+  <div id="scroll-container">
+    <div id="gallery"></div>
+    <div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000;">
+  <img id="lightbox-img" src="" style="max-width:90%; max-height:90%;">
+</div>
+  </div>
+  
+
+  <script>
+    const objects = [];
+    const endpoint = 'https://opensheet.elk.sh/1NJ_R_EzcQeA3sBEyMfCQadUMp7JcWakv4yrDcghsX9E/name';
+
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(item => {
+          objects.push({
+            name: item.name,
+            image: item.image,
+            description: item.description,
+            link: item.link
+          });
+        });
+        renderGallery();
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+      function renderGallery() {
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+
+  objects.forEach(obj => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+  <a href="${obj.link}" target="_blank" style="text-decoration: none; color: inherit;">
+    <img src="${obj.image}" alt="${obj.name}">
+    <h3>${obj.name}</h3>
+  </a>
+  <p>${obj.description}</p>
+`;
+
+    gallery.appendChild(card);
+  });
+}
+document.addEventListener("click", function (e) {
+    if (e.target.tagName === "IMG" && e.target.closest(".card")) {
+      const src = e.target.getAttribute("src");
+      document.getElementById("lightbox-img").src = src;
+      document.getElementById("lightbox").style.display = "flex";
+    }
+  });
+  document.getElementById("lightbox").addEventListener("click", function () {
+    this.style.display = "none";
+  });
+  
+  </script>
+</body>
+</html>
